@@ -4,8 +4,8 @@ from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from currencies.models import Currency
-from currencies.serializers import CurrencySerializer
+from currencies.models import *
+from currencies.serializers import *
 
 def welcome(request):
     return HttpResponse("Welcome to the exchange rate information app!")
@@ -14,4 +14,11 @@ def welcome(request):
 def currency_list(request):
     currencies = Currency.objects.all().order_by('code')
     serializer = CurrencySerializer(currencies, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def rate_list(request, curr1, curr2):
+    currency_pair = curr1 + curr2
+    rate = ExchangeRate.objects.all().filter(currency_pair=currency_pair)
+    serializer = ExchangeRateSerializer(rate, many=True)
     return Response(serializer.data)

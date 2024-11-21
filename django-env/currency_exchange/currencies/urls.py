@@ -7,6 +7,7 @@ load_exchange_rates()
 urlpatterns = [
     path('', views.welcome, name='welcome'),
     path('currencies/', views.currency_list),
+    path('currencies/<str:curr1>/<str:curr2>/', views.rate_list),
 ]
 
 

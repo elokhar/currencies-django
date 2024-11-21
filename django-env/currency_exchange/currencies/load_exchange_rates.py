@@ -20,7 +20,20 @@ def load_exchange_rates():
 
     row_label = rates.index[0]        
     for curr in currs:
+
         ticker = create_ticker(curr)
-        curr.exchange_rate = rates.loc[rates.index[0], ('Adj Close', ticker)]
-        curr.save()
-    # print(models.Currency.objects.all().values())
+        exchange_rate = rates.loc[rates.index[0], ('Adj Close', ticker)]
+        if curr.reverse_rate == True:
+            currency_pair = "USD" + curr.code
+        else:
+            currency_pair = curr.code + "USD"
+
+        rate_query_result = models.ExchangeRate.objects.filter(currency_pair=currency_pair)
+        
+        if rate_query_result:
+            rate = rate_query_result[0]
+        else:
+            rate = models.ExchangeRate(currency_pair=currency_pair)
+        rate.exchange_rate = exchange_rate
+        rate.save()
+    print(models.ExchangeRate.objects.all().values())

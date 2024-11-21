@@ -12,6 +12,6 @@ def welcome(request):
 
 @api_view(['GET'])
 def currency_list(request):
-    currencies = Currency.objects.all()
+    currencies = Currency.objects.all().order_by('code')
     serializer = CurrencySerializer(currencies, many=True)
     return Response(serializer.data)

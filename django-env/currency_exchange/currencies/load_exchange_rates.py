@@ -36,4 +36,4 @@ def load_exchange_rates():
             rate = models.ExchangeRate(currency_pair=currency_pair)
         rate.exchange_rate = exchange_rate
         rate.save()
-    print(models.ExchangeRate.objects.all().values())
+    # print(models.ExchangeRate.objects.all().values())

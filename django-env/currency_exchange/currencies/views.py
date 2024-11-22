@@ -18,7 +18,9 @@ def currency_list(request):
 
 @api_view(['GET'])
 def rate_list(request, curr1, curr2):
-    currency_pair = curr1 + curr2
-    rate = ExchangeRate.objects.all().filter(currency_pair=currency_pair)
+    rate = ExchangeRate.objects.all().filter(currency_pair=curr1+curr2)
+    if not rate:
+        rate = ExchangeRate.objects.all().filter(currency_pair=curr2+curr1)
+
     serializer = ExchangeRateSerializer(rate, many=True)
     return Response(serializer.data)
